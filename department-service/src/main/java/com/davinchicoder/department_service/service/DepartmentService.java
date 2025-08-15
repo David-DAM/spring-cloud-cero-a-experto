@@ -1,8 +1,8 @@
 package com.davinchicoder.department_service.service;
 
-import com.davinchicoder.department_service.client.EmployeeClient;
 import com.davinchicoder.department_service.model.Department;
 import com.davinchicoder.department_service.repository.DepartmentRepository;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +17,16 @@ import java.util.Optional;
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
-    private final EmployeeClient employeeClient;
+    private final EmployeeService employeeService;
+
 
     @CircuitBreaker(name = "department-service", fallbackMethod = "fallbackFindAll")
+    @Bulkhead(name = "department-service", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "fallbackFindAllBulkHead")
     public List<Department> findAll() {
 
         List<Department> departments = departmentRepository.findAll();
 
-        departments.forEach(department -> department.setEmployees(employeeClient.findAllByDepartmentId(department.getId())));
+        departments.forEach(department -> department.setEmployees(employeeService.findAllByDepartmentId(department.getId())));
 
         return departments;
     }
@@ -39,7 +41,7 @@ public class DepartmentService {
 
         Department department = optionalDepartment.get();
 
-        department.setEmployees(employeeClient.findAllByDepartmentId(id));
+        department.setEmployees(employeeService.findAllByDepartmentId(id));
 
         return Optional.of(department);
     }
@@ -56,6 +58,11 @@ public class DepartmentService {
     private Optional<Department> fallbackFindById(Long id, Throwable ex) {
         log.error("Department service is unavailable findById {}, with error {}", id, ex.getMessage());
         return departmentRepository.findById(id);
+    }
+
+    private List<Department> fallbackFindAllBulkHead(Throwable ex) {
+        log.error("Department service is overloaded {}", ex.getMessage());
+        return departmentRepository.findAll();
     }
 
 }
