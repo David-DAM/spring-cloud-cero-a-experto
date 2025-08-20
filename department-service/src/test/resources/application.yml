@@ -1,0 +1,19 @@
+stubrunner:
+  ids: davinchicoder:contract-stubs:0.0.1-SNAPSHOT:stubs:8081
+  stubs-mode: local
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    enabled: false
+  instance:
+    prefer-ip-address: false
+
+
+spring:
+  cloud:
+    discovery:
+      enabled: false
+  config:
+    import: "optional:configserver:http://localhost:8088"

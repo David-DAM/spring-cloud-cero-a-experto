@@ -22,7 +22,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: health,refresh
   endpoint:
     health:
       show-details: always
@@ -64,3 +64,6 @@ resilience4j:
       department-service:
         maxWaitDuration: 5s
         maxConcurrentCalls: 5
+
+default:
+  message: Hi
