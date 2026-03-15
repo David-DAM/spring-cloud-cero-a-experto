@@ -1,0 +1,112 @@
+{
+  "realm": "davinchicoder",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "api-gateway",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "authorizationServicesEnabled": false,
+      "clientAuthenticatorType": "none",
+      "redirectUris": [],
+      "webOrigins": []
+    },
+    {
+      "clientId": "department-service",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "department-secret",
+      "standardFlowEnabled": false,
+      "authorizationServicesEnabled": false
+    },
+    {
+      "clientId": "employee-service",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "employee-secret",
+      "standardFlowEnabled": false,
+      "authorizationServicesEnabled": false
+    }
+  ],
+  "roles": {
+    "client": {
+      "department-service": [
+        {
+          "name": "department.read"
+        },
+        {
+          "name": "department.write"
+        }
+      ],
+      "employee-service": [
+        {
+          "name": "employee.read"
+        },
+        {
+          "name": "employee.write"
+        }
+      ]
+    }
+  },
+  "users": [
+    {
+      "username": "davinchicoder",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "David",
+      "lastName": "Jimenez",
+      "email": "davinchicoderbusiness@gmail.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "department-service": [
+          "department.read",
+          "department.write"
+        ],
+        "employee-service": [
+          "employee.read",
+          "employee.write"
+        ]
+      }
+    },
+    {
+      "username": "pepe",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Pepe",
+      "lastName": "Lopez",
+      "email": "pepito@gmail.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "department-service": [
+          "department.read"
+        ],
+        "employee-service": [
+          "employee.read"
+        ]
+      }
+    }
+  ]
+}
