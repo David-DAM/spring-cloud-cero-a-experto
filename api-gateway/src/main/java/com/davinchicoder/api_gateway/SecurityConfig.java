@@ -43,8 +43,12 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(keycloakJwtConverter.toReactive())))
                 .authorizeExchange(exchange -> {
+
+                    exchange.pathMatchers("/actuator/health/**").permitAll();
 
                     permissions.forEach((path, methods) ->
                             methods.forEach((method, authority) ->
