@@ -1,6 +1,5 @@
 package com.davinchicoder.api_gateway;
 
-import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -62,18 +61,5 @@ public class SecurityConfig {
                 });
 
         return http.build();
-    }
-
-    @Bean
-    public GlobalFilter jwtForwardFilter() {
-        return (exchange, chain) -> {
-            var token = exchange.getRequest().getHeaders().getFirst("Authorization");
-            if (token != null) {
-                exchange = exchange.mutate()
-                        .request(r -> r.header("Authorization", token))
-                        .build();
-            }
-            return chain.filter(exchange);
-        };
     }
 }

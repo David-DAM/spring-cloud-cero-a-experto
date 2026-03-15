@@ -25,6 +25,7 @@ public class EmployeeController {
 
     @GetMapping("/department/{id}")
     public ResponseEntity<List<Employee>> findAllByDepartmentId(@PathVariable Long id) {
+        log.info("Find all employees by department id {}", id);
         return ResponseEntity.ok(employeeRepository.findByDepartmentId(id));
     }
 

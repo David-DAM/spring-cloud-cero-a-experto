@@ -6,3 +6,18 @@ spring:
     name: department-service
   config:
     import: "optional:configserver:http://localhost:8088"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/davinchicoder
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/davinchicoder
+        registration:
+          employee-service-client:
+            provider: keycloak
+            authorization-grant-type: client_credentials
+            client-id: department-service
+            client-secret: department-secret
